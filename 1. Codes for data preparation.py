@@ -23,42 +23,26 @@ def Event_Rows_Dropping (Event_Data):
     Event = Event_Data
     Event_shape1 = Event.shape
     print('The dimension of the original dataset: ', Event_shape1)
-    
-    #1. 'EVENT_CODE' only keep rows == 'Incident'
+        
     Event = Event[Event['EVENT_CODE'] == 'Incident']
+    Event = Event[Event['CENTER_NAME'].isin(pd.Series(['SOC', 'AOC South', 'AOC Central', 'TOC7', \
+                                                       'TOC3', 'TOC4', 'CHART Support']))]
 
-    #2. 'CENTER_NAME' only keep rows == ['SOC', 'AOC South', 'AOC Central', 'TOC7', 'TOC3', 'TOC4', 'CHART Support']
-    Event = Event[Event['CENTER_NAME'].isin(pd.Series(['SOC', 'AOC South', 'AOC Central', 'TOC7', 'TOC3', 'TOC4', 'CHART Support']))]
-
-    #3. 'PRIMARY_FLAG' only keep rows != 'nan'
-    Event = Event[Event['PRIMARY_FLAG'] != 'nan']
-
-    #4. 'OFFLINE_IND' only keep rows != 'nan'
-    Event = Event[Event['OFFLINE_IND'] != 'nan']
-
-    #5. 'EVENT_OPEN_DATE' and 'EVENT_CLOSED_DATE' only keep rows != 'nan'
-    Event = Event[Event['EVENT_OPEN_DATE'] != 'nan']
-    Event = Event[Event['EVENT_CLOSED_DATE'] != 'nan']
-
-    #6. 'SOURCE_CODE' only keep rows != 'nan'
-    Event = Event[Event['SOURCE_CODE'] != 'nan']
-
-    #7. 'INCIDENT_CODE' only keep rows != 'nan'
-    Event = Event[Event['INCIDENT_CODE'] != 'nan']
-
-    #8. 'PAVEMENT_CONDITION_CODE' only keep rows != 'nan'
-    Event = Event[Event['PAVEMENT_CONDITION_CODE'] != 'nan']
-
-    #9. 'MAX_LANES_CLOSED' only keeps rows with values falling in [0, 12]
+    Event = Event[(Event['PRIMARY_FLAG'] != 'nan')      \
+                  & (Event['OFFLINE_IND'] != 'nan')     \
+                  & (Event['EVENT_OPEN_DATE'] != 'nan') \
+                  & (Event['EVENT_CLOSED_DATE'] != 'nan')]
+      
+    Event = Event[(Event['SOURCE_CODE'] != 'nan')                 \
+                  & (Event['INCIDENT_CODE'] != 'nan')             \
+                  & (Event['PAVEMENT_CONDITION_CODE'] != 'nan')   \
+                  & (Event['FALSE_ALARM_IND'] == 0)]
+    
     Event = Event[(Event['MAX_LANES_CLOSED'] <= 12) | (Event['MAX_LANES_CLOSED'] >= 0)]
+    Event = Event[(Event['Duration'] <= 1440) & (Event['Duration'] >= 1)]
+    
     print('The dimension after removing extra rows: ', Event.shape)
     print('The number of deleted rows is: ', Event_shape1[0] - Event.shape[0])
-    
-    #10. 'FALSE_ALARM_IND' only keeps rows == 0
-    Event = Event[Event['FALSE_ALARM_IND'] == 0]
-    
-    #11. 'Duration' only keeps rows with values falling in [1, 1440] (within one day)
-    Event = Event[(Event['Duration'] <= 1440) & (Event['Duration'] >= 1)]
     
     Event_rows_dropped = Event
     return Event_rows_dropped
