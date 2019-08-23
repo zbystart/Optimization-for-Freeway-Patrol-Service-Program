@@ -91,7 +91,7 @@ def Merge_and_AddCols (Event_cols_dropped, Location_RowsCols_Dropped):
     df['Open_Weekday'] = pd.to_datetime(df['EVENT_OPEN_DATE']).dt.dayofweek  # Monday is 0...
     df['Open_Weekday'] = df['Open_Weekday'] +1                            # Monday is 1...
     
-    df.to_csv('C:\\Users\\byzhang\\Desktop\\Bella_2019\\Proposal - Aug 23, 2019\Data\\Edited Incidents Data\\Merged_Edited_Incidents.csv', index=False)
+    #df.to_csv('.\\Merged_Edited_Incidents.csv', index=False)
     print('The dimension of data after merging and adding useful columns', df.shape)
     
     Merged_Edited_Incidents = df
