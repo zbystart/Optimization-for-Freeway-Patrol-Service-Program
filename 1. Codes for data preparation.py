@@ -93,7 +93,7 @@ def Location_RowsCols_Dropping (Location):
     Location_RowsCols_Dropped = df
     return Location_RowsCols_Dropped
 
-#4. Merge the Event and Location files and add useful columns
+# 4. Merge the Event and Location files and add useful columns
 def Merge_and_AddCols (Event_cols_dropped, Location_RowsCols_Dropped):
     
     df_event = Event_cols_dropped
@@ -113,9 +113,9 @@ def Merge_and_AddCols (Event_cols_dropped, Location_RowsCols_Dropped):
     Merged_Edited_Incidents = df
     return Merged_Edited_Incidents
 
-#5. Spatial Selection in ArcGIS
+# 5. Spatial Selection in ArcGIS
 
-#6. Brief review of the incidents within 10 miles of the freeways
+# 6. Brief review of the incidents within 10 miles of the freeways
 Incidents = gpd.read_file("..\\Incidents_10miles.shp")  
 
 # Renames columns since ArcGIS shrinked those names
@@ -125,7 +125,7 @@ Incidents.columns = Full_Name
 
 IncidentType_Count = Incidents.groupby('INCIDENT_CODE')['EVENT_ID'].count().sort_values(ascending = False)
 
-# Plot
+# Plot 1
 ax = IncidentType_Count.plot.bar(figsize=(30,8))
 
     ## Annotation
