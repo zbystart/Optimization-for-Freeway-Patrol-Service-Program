@@ -38,7 +38,7 @@ def Event_Rows_Dropping (Event_Data):
                   & (Event['PAVEMENT_CONDITION_CODE'] != 'nan')   \
                   & (Event['FALSE_ALARM_IND'] == 0)]
     
-    Event = Event[(Event['MAX_LANES_CLOSED'] <= 12) | (Event['MAX_LANES_CLOSED'] >= 0)]
+    Event = Event[(Event['MAX_LANES_CLOSED'] <= 12) & (Event['MAX_LANES_CLOSED'] >= 0)]
     Event = Event[(Event['Duration'] <= 1440) & (Event['Duration'] >= 1)]
     
     print('The dimension after removing extra rows: ', Event.shape)
